@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+<style>
+    #center{
+        position: absolute;
+top: 50%;
+left: 50%;
+transform: translate(-50%, -50%);
+width: 60%;
+height: 60%;        
+border: 1px solid black;
+    }
+    .divhei{
+        position: absolute;
+        width: 200px;
+        height: 300px;
+        overflow: hidden; 
+    }
+    img{
+        transform: translateY(100%);
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+      
+    }
+
+</style>
+</head>
+<body>
+    <div id="center"></div>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js" integrity="sha512-7eHRwcbYkK4d9g/6tD/mhkf++eoTHwpNM9woBxtPUBWm67zeAfFC+HrdoE2GanKeocly/VxeLvIqwvCdk7qScg==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+    <script>
+let rect = document.querySelector("#center");
+let picurl =['https://images.unsplash.com/photo-1705170370391-dccd5eaa88ee?w=500&auto=format&fit=crop&q=60&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxleHBsb3JlLWZlZWR8OXx8fGVufDB8fHx8fA%3D%3D','https://images.unsplash.com/photo-1715788334617-e8894105a872?w=500&auto=format&fit=crop&q=60&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxleHBsb3JlLWZlZWR8NXx8fGVufDB8fHx8fA%3D%3D','https://images.unsplash.com/photo-1716094978972-f05cb5796185?w=500&auto=format&fit=crop&q=60&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxleHBsb3JlLWZlZWR8MTF8fHxlbnwwfHx8fHw%3D','https://images.unsplash.com/photo-1715619044226-b693312ffb9b?w=500&auto=format&fit=crop&q=60&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxleHBsb3JlLWZlZWR8MXx8fGVufDB8fHx8fA%3D%3D','https://images.unsplash.com/photo-1716080964962-581876fe3c58?w=500&auto=format&fit=crop&q=60&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxleHBsb3JlLWZlZWR8MTJ8fHxlbnwwfHx8fHw%3D','https://images.unsplash.com/photo-1715788338483-d991b12a988f?w=500&auto=format&fit=crop&q=60&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxleHBsb3JlLWZlZWR8MTh8fHxlbnwwfHx8fHw%3D','https://images.unsplash.com/photo-1716042539914-50bf7ea49d00?w=500&auto=format&fit=crop&q=60&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxleHBsb3JlLWZlZWR8MTl8fHxlbnwwfHx8fHw%3D','https://images.unsplash.com/photo-1716149297230-418da494f7cb?w=500&auto=format&fit=crop&q=60&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxleHBsb3JlLWZlZWR8MTV8fHxlbnwwfHx8fHw%3D','https://images.unsplash.com/photo-1715537201090-cd56c588db80?w=500&auto=format&fit=crop&q=60&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxleHBsb3JlLWZlZWR8M3x8fGVufDB8fHx8fA%3D%3D','https://images.unsplash.com/photo-1715702803426-39aa0d4c39a9?w=500&auto=format&fit=crop&q=60&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxleHBsb3JlLWZlZWR8NHx8fGVufDB8fHx8fA%3D%3D'];
+
+const throttleFunction = (func, delay) => {
+ let prev = 0;
+ return (...args) => {
+     let now = new Date().getTime();
+     if (now - prev > delay) {
+         prev = now;
+         return func(...args);
+     }
+ }
+}
+
+rect.addEventListener("mousemove",
+ throttleFunction((dets) => {
+    // console.log('throttled')
+   let div = document.createElement('div');
+   div.classList.add('divhei');
+   div.style.left = (dets.clientX -500) + 'px';
+   div.style.top = (dets.clientY - 500) + 'px';
+   rect.appendChild(div);
+   let image = document.createElement('img');
+   let ranimg = picurl[Math.floor(Math.random()*picurl.length)]
+   image.src = ranimg 
+   div.appendChild(image);
+   setTimeout(() => {
+       div.remove();
+   },2000)
+   gsap.to(image, {
+    transform: 'translateY(0)',
+    ease: Power1,
+duration : .5
+   });
+   gsap.to(image, {
+    transform: 'translateY(100%)',
+    ease: Power2,
+delay : .6
+   })
+    //  console.log(dets.clientX, dets.clientY)
+ }, 400));
+    </script>
+</body>
+</html>
